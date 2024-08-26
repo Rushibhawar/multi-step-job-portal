@@ -55,6 +55,9 @@ const Experience = () => {
       value: "",
       error: "",
     },
+    currentlyWorking: {
+      value: false,
+    },
   });
 
   const [editIndex, setEditIndex] = useState(null);
@@ -66,6 +69,8 @@ const Experience = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { jobId } = useParams();
+
+  const today = new Date();
 
   // #region reset
   const resetExperienceData = () => {
@@ -86,6 +91,9 @@ const Experience = () => {
         value: "",
         error: "",
       },
+      currentlyWorking: {
+        value: false,
+      },
     });
     setEditIndex(null);
   };
@@ -97,20 +105,31 @@ const Experience = () => {
       setExperienceData((prevData) => ({
         ...prevData,
         companyName: {
-          value: selectedData.companyName || "",
-          error: prevData.companyName.error,
+          value: selectedData?.companyName || "",
+          error: prevData?.companyName?.error,
         },
         jobTitle: {
-          value: selectedData.jobTitle || "",
-          error: prevData.jobTitle.error,
+          value: selectedData?.jobTitle || "",
+          error: prevData?.jobTitle?.error,
         },
         responsibilities: {
-          value: selectedData.responsibilities || "",
-          error: prevData.responsibilities.error,
+          value: selectedData?.responsibilities || "",
+          error: prevData?.responsibilities?.error,
         },
         duration: {
-          value: selectedData.duration || "",
-          error: prevData.duration.error,
+          value: selectedData?.duration || "",
+          error: prevData?.duration?.error,
+        },
+        startDate: {
+          value: selectedData?.startDate || "",
+          error: prevData?.startDate?.error,
+        },
+        endDate: {
+          value: selectedData?.endDate || "",
+          error: prevData?.endDate?.error,
+        },
+        currentlyWorking: {
+          value: selectedData?.currentlyWorking || false,
         },
       }));
     }
@@ -155,8 +174,8 @@ const Experience = () => {
   const handleChange = (event) => {
     setExperienceData((prevData) => ({
       ...prevData,
-      [event.target.name]: {
-        value: event.target.value,
+      [event?.target?.name]: {
+        value: event?.target?.value,
         error: "",
       },
     }));
@@ -189,11 +208,15 @@ const Experience = () => {
   //   };
 
   const handleDateSelect = (date) => {
-    if (currentlyWorking) {
-      console.log("from : " + date);
-      const durationValue = calculateDurationFromStartDate(
-        experienceData?.startDate?.value
-      );
+    // if (currentlyWorking) {
+    if (experienceData?.currentlyWorking?.value) {
+      //   console.log("from : " + date);
+      //   const durationValue = calculateDurationFromStartDate(
+      //     experienceData?.startDate?.value
+      //   );
+
+      const durationValue = calculateDurationFromStartDate(date);
+
       setExperienceData((prevData) => ({
         ...prevData,
         duration: {
@@ -206,11 +229,16 @@ const Experience = () => {
         },
       }));
     } else {
-      console.log("from : " + date.from + "to : " + date.to);
-      const durationValue = calculateDuration(
-        experienceData?.startDate?.value,
-        experienceData?.endDate?.value
-      );
+      //   console.log("from : " + date.from + "to : " + date.to);
+      //   const durationValue = calculateDuration(
+      //     experienceData?.startDate?.value,
+      //     experienceData?.endDate?.value
+      //   );
+
+      const durationValue = calculateDuration(date?.from, date?.to);
+
+      console.log("durationValue :" + durationValue);
+
       setExperienceData((prevData) => ({
         ...prevData,
         duration: {
@@ -218,11 +246,11 @@ const Experience = () => {
           error: "",
         },
         startDate: {
-          value: date.from,
+          value: date?.from,
           error: "",
         },
         endDate: {
-          value: date.to,
+          value: date?.to,
           error: "",
         },
       }));
@@ -237,8 +265,8 @@ const Experience = () => {
     setCurrentlyWorking(value);
 
     const durationValue = calculateDurationFromStartDate(
-        experienceData?.startDate?.value
-      );
+      experienceData?.startDate?.value
+    );
 
     if (value) {
       setExperienceData((prevData) => ({
@@ -251,11 +279,22 @@ const Experience = () => {
           value: durationValue,
           error: "",
         },
+        currentlyWorking: {
+          value: value,
+        },
+      }));
+    } else {
+      setExperienceData((prevData) => ({
+        ...prevData,
+        currentlyWorking: {
+          value: value,
+        },
       }));
     }
   };
 
   const handleEdit = (index) => {
+    console.log("index selected exp : " + index);
     setEditIndex(index);
   };
 
@@ -326,6 +365,7 @@ const Experience = () => {
       valid = false;
       isEmpty = true;
     }
+
     if (
       experienceData?.responsibilities?.value?.trim().length < 10 ||
       experienceData?.responsibilities?.value?.trim().length > 500
@@ -337,7 +377,7 @@ const Experience = () => {
           error: "Responsibilities must be between 10 and 500 characters",
         },
       };
-      valid = true;
+      valid = false;
     }
 
     if (experienceData?.duration?.value === "") {
@@ -367,7 +407,8 @@ const Experience = () => {
       valid = false;
     }
 
-    if (!currentlyWorking) {
+    // if (!currentlyWorking) {
+    if (experienceData?.currentlyWorking?.value == false) {
       if (experienceData?.endDate?.value === "") {
         data = {
           ...data,
@@ -418,8 +459,16 @@ const Experience = () => {
               jobTitle: experienceData.jobTitle.value,
               responsibilities: experienceData.responsibilities.value,
               duration: experienceData.duration.value,
+              startDate: experienceData.startDate.value,
+              endDate: experienceData.endDate.value
+                ? experienceData.endDate.value
+                : "",
+              currentlyWorking: experienceData.currentlyWorking.value,
             };
 
+            console.log(
+              "updateExperienceData :" + JSON.stringify(updateExperienceData)
+            );
             dispatch(
               updateWorkExperience({
                 index: editIndex,
@@ -435,9 +484,11 @@ const Experience = () => {
               duration: experienceData.duration.value,
               startDate: experienceData.startDate.value,
               endDate: experienceData.endDate.value
-                ? experienceData.duration.value
+                ? experienceData.endDate.value
                 : "",
+              currentlyWorking: experienceData.currentlyWorking.value,
             };
+            console.log("data :" + JSON.stringify(data));
 
             dispatch(setWorkExperience(data));
             toast({
@@ -450,12 +501,14 @@ const Experience = () => {
           toast({
             variant: "destructive",
             title: "Uh oh! Something went wrong.",
+            description: "Please fill valid details only.",
           });
         }
       } else {
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
+          description: "Please fill out details properly.",
         });
       }
     } catch (error) {
@@ -588,7 +641,7 @@ const Experience = () => {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="currently-working"
-                  checked={currentlyWorking}
+                  checked={experienceData?.currentlyWorking?.value}
                   onCheckedChange={handleCheckboxChange}
                 />
                 <label
@@ -688,6 +741,14 @@ const Experience = () => {
               </>
             )}
           </div>
+        </div>
+        <div className="w-full flex flex-row gap-5 justify-end items-center">
+          <Button className="w-40" variant="secondary">
+            Previous
+          </Button>
+          <Button className="w-40" onClick={handleOnNext}>
+            Next
+          </Button>
         </div>
       </CardContent>
     </Card>
