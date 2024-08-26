@@ -1,4 +1,14 @@
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/common/alertDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/common/alertDialog";
 import { Button } from "@/components/ui/common/button/button";
 import {
   Card,
@@ -351,17 +361,20 @@ const Education = () => {
 
     try {
       if (!isEmpty) {
+        console.log("not empty");
         if (valid) {
+          console.log("valid");
+
           if (editIndex !== null) {
             console.log("updateEducation if valid and editIndex !== null");
 
             const updateEducationData = {
-              degree: educationData.degree.value,
-              schoolInstitue: educationData.schoolInstitue.value,
-              boardUniversity: educationData.boardUniversity.value,
-              cgpa: educationData.cgpa.value,
-              passingDate: educationData.passingDate.value,
-              startDate: educationData.startDate.value,
+              degree: educationData?.degree?.value,
+              schoolInstitue: educationData?.schoolInstitue?.value,
+              boardUniversity: educationData?.boardUniversity?.value,
+              cgpa: educationData?.cgpa?.value,
+              passingDate: educationData?.passingDate?.value,
+              startDate: educationData?.startDate?.value,
             };
 
             console.log("updateEducation Data : " + data);
@@ -374,14 +387,14 @@ const Education = () => {
             console.log("setEducation if valid and and editindex null");
 
             const data = {
-              degree: educationData.degree.value,
-              schoolInstitue: educationData.schoolInstitue.value,
-              boardUniversity: educationData.boardUniversity.value,
-              cgpa: educationData.cgpa.value,
+              degree: educationData?.degree?.value,
+              schoolInstitue: educationData?.schoolInstitue?.value,
+              boardUniversity: educationData?.boardUniversity?.value,
+              cgpa: educationData?.cgpa?.value,
               passingDate: educationData?.passingDate?.value
-                ? educationData.passingDate.value
+                ? educationData?.passingDate?.value
                 : "",
-              startDate: educationData.startDate.value,
+              startDate: educationData?.startDate?.value,
             };
             console.log("setEducation Data : " + JSON.stringify(data));
 
@@ -406,12 +419,16 @@ const Education = () => {
         });
       }
     } catch (error) {
-      console.log("error :", error);
+      //   console.log("error :", error);
     }
   };
 
   const handleOnNext = () => {
     if (educationList && educationList?.length > 0) {
+      toast({
+        title: "Data saved",
+        description: "Successfully saved the education information.",
+      });
       navigate(`/jobs/applicationForm/experience/${jobId}`);
     } else {
       toast({
@@ -422,17 +439,17 @@ const Education = () => {
     }
   };
 
-//   const handleOnPrevious = () => {
-//     if (educationList && educationList?.length > 0) {
-//       navigate(`/jobs/applicationForm/experience/${jobId}`);
-//     } else {
-//       toast({
-//         variant: "destructive",
-//         title: "Cannot proceed",
-//         description: "Please add at least one education entry.",
-//       });
-//     }
-//   };
+  //   const handleOnPrevious = () => {
+  //     if (educationList && educationList?.length > 0) {
+  //       navigate(`/jobs/applicationForm/experience/${jobId}`);
+  //     } else {
+  //       toast({
+  //         variant: "destructive",
+  //         title: "Cannot proceed",
+  //         description: "Please add at least one education entry.",
+  //       });
+  //     }
+  //   };
 
   return (
     <>
