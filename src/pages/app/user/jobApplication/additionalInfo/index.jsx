@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Experience = () => {
+const AdditionalInfo = () => {
   const [experienceData, setExperienceData] = useState({
     companyName: {
       value: "",
@@ -763,4 +763,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default AdditionalInfo;

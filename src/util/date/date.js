@@ -9,6 +9,8 @@ export const parseDate = (dateString) => {
 };
 
 export const calculateDuration = (startDate, endDate) => {
+    console.log("calculateDuration => startDate :"+startDate+", endDate : "+endDate)
+
   if (!startDate || !endDate) return "";
 
   const start = new Date(startDate);
@@ -28,6 +30,7 @@ export const calculateDuration = (startDate, endDate) => {
 };
 
 export const calculateDurationFromStartDate = (startDate) => {
+    console.log("calculateDurationFromStartDate :"+startDate)
     if (!startDate) return "";
 
     const start = new Date(startDate);

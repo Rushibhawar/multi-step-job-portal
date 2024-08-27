@@ -46,3 +46,12 @@ export const validateNames = (companyName) => {
   const re = /^(?=\S)(?=.*\S$)[a-zA-Z][a-zA-Z0-9_ ]{0,99}$/; // 1 to 100 chars, starts with a letter
   return re.test(companyName);
 };
+
+export const isValidUrl = (string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};

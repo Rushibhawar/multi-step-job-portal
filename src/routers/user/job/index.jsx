@@ -5,6 +5,7 @@ import Experience from "@/pages/app/user/jobApplication/experience";
 import Education from "@/pages/app/user/jobApplication/education";
 import Review from "@/pages/app/user/jobApplication/review";
 import MultiStepFormWrapper from "@/pages/app/user/jobApplication";
+import Skills from "@/pages/app/user/jobApplication/skills";
 
 
 const MultiStepFormRoutes = () => {
@@ -15,7 +16,9 @@ const MultiStepFormRoutes = () => {
     if (path.includes("personal-info")) return 0;
     if (path.includes("education")) return 1;
     if (path.includes("experience")) return 2;
-    if (path.includes("review")) return 3;
+    if (path.includes("skills")) return 3;
+    if (path.includes("additional-info")) return 4;
+    if (path.includes("review")) return 5;
     return 0;
   };
 
@@ -25,6 +28,7 @@ const MultiStepFormRoutes = () => {
         <Route path="personal-info/:jobId" element={<PersonalInfo />} />
         <Route path="education/:jobId" element={<Education />} />
         <Route path="experience/:jobId" element={<Experience />} />
+        <Route path="skills/:jobId" element={<Skills />} />
         <Route path="review/:jobId" element={<Review />} />
       </Routes>
     </MultiStepFormWrapper>
