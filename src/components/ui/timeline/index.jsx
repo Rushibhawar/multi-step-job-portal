@@ -13,7 +13,14 @@ import { Progress } from "../common/progress/progress";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-const steps = ["Personal Info", "Education", "Experience", "Review & Submit"];
+const steps = [
+  "Personal Info",
+  "Education",
+  "Experience",
+  "Skills",
+  "Addional Info",
+  "Review & Submit",
+];
 
 // const TimelineCard = ({ currentStep }) => {
 //   const progressValue = ((currentStep - 1) / (steps.length - 1)) * 100;
@@ -78,7 +85,6 @@ const TimelineCard = ({ currentStep }) => {
   //   },
   // });
 
-
   const [localCurrentStep, setLocalCurrentStep] = useState(0);
 
   const { stepProgress } = useSelector((state) => state.stepProgress);
@@ -126,21 +132,16 @@ const TimelineCard = ({ currentStep }) => {
   //   }
   // }, []);
 
-  
   useEffect(() => {
-    
-    console.log("currentStep : "+currentStep)
-
+    console.log("currentStep : " + currentStep);
   }, [currentStep]);
 
-
   useEffect(() => {
-    
-    console.log("timeline : "+stepProgress)
+    console.log("timeline : " + stepProgress);
     if (stepProgress === null || stepProgress === undefined) {
       setLocalCurrentStep(0);
     } else {
-      console.log("stepProgress.currentStep :"+stepProgress.currentStep);
+      console.log("stepProgress.currentStep :" + stepProgress.currentStep);
       setLocalCurrentStep(stepProgress.currentStep);
     }
   }, [stepProgress]);
@@ -166,7 +167,7 @@ const TimelineCard = ({ currentStep }) => {
             <div className=" w-full flex  items-center basis-3/5">
               <Progress
                 // value={progressData.personalInfoProgress}
-                 value={currentStep >= 1 ? 100 : 0}
+                value={currentStep >= 1 ? 100 : 0}
                 className="w-full h-2"
               />
             </div>
@@ -187,7 +188,6 @@ const TimelineCard = ({ currentStep }) => {
               <Progress
                 // value={progressData.educationProgress}
                 value={currentStep >= 2 ? 100 : 0}
-
                 className="w-full h-2"
               />
             </div>
@@ -213,14 +213,54 @@ const TimelineCard = ({ currentStep }) => {
             </div>
           </div>
 
+          {/* Skills Step */}
+          <div className={`flex flex-row w-full gap-2 items-center`}>
+            <div
+              className={` ${
+                currentStep >= 3 ? "font-bold " : "text-gray-500 "
+              } flex flex-col gap-3 items-center justify-center text-center basis-2/5`}
+            >
+              {steps[3]}
+              <CheckCircledIcon />
+            </div>
+
+            <div className=" w-full flex  items-center basis-3/5">
+              <Progress
+                // value={progressData.experienceProgress}
+                value={currentStep >= 4 ? 100 : 0}
+                className="w-full h-2"
+              />
+            </div>
+          </div>
+
+          {/* Additional info Step */}
+          <div className={`flex flex-row w-full gap-2 items-center`}>
+            <div
+              className={` ${
+                currentStep >= 4 ? "font-bold " : "text-gray-500 "
+              } flex flex-col gap-3 items-center justify-center text-center basis-2/5`}
+            >
+              {steps[4]}
+              <CheckCircledIcon />
+            </div>
+
+            <div className=" w-full flex  items-center basis-3/5">
+              <Progress
+                // value={progressData.experienceProgress}
+                value={currentStep >= 5 ? 100 : 0}
+                className="w-full h-2"
+              />
+            </div>
+          </div>
+
           {/* Review & Submit Step */}
           <div className={`flex flex-row w-max gap-2 items-center`}>
             <div
               className={`${
-                currentStep > 3 ? "font-bold " : "text-gray-500"
+                currentStep >= 5 ? "font-bold " : "text-gray-500"
               } flex flex-col gap-3 items-center justify-center text-center md:min-w-48 `}
             >
-              {steps[3]}
+              {steps[5]}
               <CheckCircledIcon />
             </div>
             {/* {isVisible && (
